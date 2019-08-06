@@ -2,18 +2,52 @@
   <div class="div1">
     <el-container class="container">
       <el-header class="header" height="90px">
-        <el-row>
-          <el-col :span="8" class="row1">
-            <div class="grid-content bg-purple">
-
-            </div>
+        <el-row  :gutter="24" class="row">
+          <el-col :span="4" class="row1">
+            <p2>图标</p2>
           </el-col>
-          <el-col :span="8" class="row2"><div class="grid-content bg-purple-light"></div></el-col>
-          <el-col :span="8" class="row3"><div class="grid-content bg-purple"></div></el-col>
+          <el-col :span="14" class="row2">
+            <p4>中</p4>
+            <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+              <el-radio-button :label="false">展开</el-radio-button>
+              <el-radio-button :label="true">收起</el-radio-button>
+            </el-radio-group>
+          </el-col>
+          <el-col :span="6" class="row3">
+            <el-link type="primary" href="http://localhost:8090/">退出登录</el-link>
+          </el-col>
         </el-row>
       </el-header>
-      <el-container >
-        <el-aside width="200px" class="aside">Aside</el-aside>
+      <el-container>
+
+        <el-aside  class="aside">
+          <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                   :collapse="isCollapse" :unique-opened="flag">
+            <el-submenu index="1">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">导航一</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1">选项1</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="1-2">选项2</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+
+            <el-submenu index="1">
+              <template slot="title">
+                <i class="el-icon-setting"></i>
+                <span slot="title">导航二</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="1-1">选项1</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+          </el-menu>
+
+        </el-aside>
         <el-container class="main">
           <el-main>Main</el-main>
         </el-container>
@@ -23,7 +57,22 @@
 </template>
 
 <script>
-  export default {};
+  export default {
+    data() {
+      return {
+        isCollapse: true,
+        flag:true
+      };
+    },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    }
+  };
 </script>
 
 <style>
@@ -34,18 +83,25 @@
     height:100%;
   }
   .header{
-    background-color: cornflowerblue;
+    background-color: slategrey;
   }
   .aside{
-    background-color: darkorange;
   }
   .main{
     background-color: darkgreen;
   }
-  .row1{
-    background-color: fuchsia;
+  .row{
+    height:100%;
   }
-  .grid-content bg-purple{
+  .row1{
+  }
+  .row2{
+  }
+  .row3{
+  }
 
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
   }
 </style>

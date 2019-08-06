@@ -1,56 +1,43 @@
 <template>
   <div class="div1">
-    <el-container class="container">
-      <el-header class="header" height="90px">
-        <el-row  :gutter="24" class="row">
-          <el-col :span="4" class="row1">
-            <p2>图标</p2>
-          </el-col>
-          <el-col :span="14" class="row2">
-            <p4>中</p4>
-            <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-              <el-radio-button :label="false">展开</el-radio-button>
-              <el-radio-button :label="true">收起</el-radio-button>
-            </el-radio-group>
-          </el-col>
-          <el-col :span="6" class="row3">
-            <el-link type="primary" href="http://localhost:8090/">退出登录</el-link>
-          </el-col>
-        </el-row>
+    <el-container class="outer_container">
+      <el-header class="header">
+        Header
       </el-header>
-      <el-container>
-
-        <el-aside  class="aside">
-          <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                   :collapse="isCollapse" :unique-opened="flag">
+      <el-container class="inner_container">
+        <el-aside width="200px" class="aside">
+          <el-menu :default-openeds="['1']" unique-opened="open_flag" background-color="#545c64"
+            text-color="#fff" active-text-color="#ffd04b">
             <el-submenu index="1">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span slot="title">导航一</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-              </el-menu-item-group>
+              <template slot="title"><i class="el-icon-user-solid"></i>导航一</template>
+              <el-menu-item index="1-1">选项1</el-menu-item>
+              <el-menu-item index="1-2">选项2</el-menu-item>
+              <el-menu-item index="1-3">选项3</el-menu-item>
+              <el-submenu index="1-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="1-4-1">选项4-1</el-menu-item>
+              </el-submenu>
             </el-submenu>
-
-            <el-submenu index="1">
-              <template slot="title">
-                <i class="el-icon-setting"></i>
-                <span slot="title">导航二</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-              </el-menu-item-group>
+            <el-submenu index="2">
+              <template slot="title"><i class="el-icon-menu"></i>导航二</template>
+              <el-menu-item index="2-1">选项1</el-menu-item>
+              <el-menu-item index="2-2">选项2</el-menu-item>
+            </el-submenu>
+            <el-submenu index="3">
+              <template slot="title"><i class="el-icon-setting"></i>导航三</template>
+              <el-menu-item index="3-1">选项1</el-menu-item>
+              <el-menu-item index="3-2">选项2</el-menu-item>
+            </el-submenu>
+            <el-submenu index="4">
+              <template slot="title"><i class="el-icon-goods"></i>导航四</template>
+              <el-menu-item index="3-1">选项1</el-menu-item>
+              <el-menu-item index="3-2">选项2</el-menu-item>
             </el-submenu>
           </el-menu>
-
         </el-aside>
-        <el-container class="main">
-          <el-main>Main</el-main>
-        </el-container>
+        <el-main class="main">
+          Main
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -60,48 +47,31 @@
   export default {
     data() {
       return {
-        isCollapse: true,
-        flag:true
+        open_flag: true
       };
     },
     methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      }
     }
   };
 </script>
 
 <style>
-  .div1{
+  .div1 {
     height: 100%;
   }
-  .container{
-    height:100%;
+  .outer_container {
+    height: 100%;
   }
-  .header{
+  .inner_container {
+    height: 100%;
+  }
+  .header {
     background-color: slategrey;
+    text-align: center;
   }
-  .aside{
+  .aside {
   }
-  .main{
-    background-color: darkgreen;
-  }
-  .row{
-    height:100%;
-  }
-  .row1{
-  }
-  .row2{
-  }
-  .row3{
-  }
-
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
+  .main {
+    background-color: palevioletred;
   }
 </style>

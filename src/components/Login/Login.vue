@@ -21,6 +21,8 @@
 </template>
 
 <script>
+  import Home from "../Home/Home";
+
   export default {
     name:'Login',
     data() {
@@ -80,27 +82,23 @@
     methods: {
       func_enter(){
         this.submitForm("ruleForm");
-        console.log("登录成功");
       },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+      submitForm(ruleForm) {
+        this.$refs[ruleForm].validate((valid) => {
           if (valid) {
-            /*//axios测试使用
-            axios.get('')
-              .then((res)=>{
-              console.log("发送请求")
-            }).catch((error)=>{
-              console.log("出现错误")
-            })*/
-            alert('submit!');
+            //发送登录请求给服务器服务器验证请求并返回结果
+            this.$message.success("成功登录")
+            this.$router.push({name:'Home'})
+            console.log('login succeed')
           } else {
+            this.$message.error("验证失败")
             console.log('error submit!!');
             return false;
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      resetForm(ruleForm) {
+        this.$refs[ruleForm].resetFields();
       }
     }
   };

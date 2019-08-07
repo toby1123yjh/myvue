@@ -9,8 +9,8 @@
       <el-container class="inner_container">
 
         <el-aside width="200px" class="aside">
-          <el-menu :default-openeds="['1']" :unique-opened=true background-color="#545c64"
-                   :router=true text-color="#fff" active-text-color="#ffd04b">
+          <el-menu :default-openeds="['1']" :unique-opened=true background-color="#545c64" active-text-color="#ffd04b"
+                   :router=true text-color="#fff" >
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-user-solid"></i>系统管理</template>
               <el-menu-item index="/user">用户管理</el-menu-item>
@@ -56,24 +56,20 @@
   .div1 {
     height: 100%;
   }
-
   .outer_container {
     height: 100%;
   }
-
   .inner_container {
     height: 100%;
+    background-color: darkgrey;
   }
-
   .header {
     background-color: slategrey;
     text-align: center;
   }
-
   .aside {
     background-color: #545c64;
   }
-
   .main {
   }
 </style>

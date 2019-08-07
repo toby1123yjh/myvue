@@ -69,6 +69,15 @@
                     address: '上海市普陀区金沙江路 1516 弄'
                 }]
             }
+        },
+        created() {
+            this.getUserList()
+        },
+        methods :{
+            async getUserList() {
+            //    this.&http
+                const res =await this.$http.get('users?query=')
+            }
         }
     }
 </script>

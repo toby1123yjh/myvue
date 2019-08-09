@@ -8,13 +8,12 @@
   export default {
     data () {
       return {
-        username:'djy'
+        username:'8989889'
       }
     },
     methods: {
       async handleclick() {
-        const res=await this.$http.get('http://localhost:8080/sys/user/get/djy',{
-        })
+        const res=await this.$http.get('http://localhost:8080/sys/user/get/'+this.username)
         console.log(res)
       }
     }

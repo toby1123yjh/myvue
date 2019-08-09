@@ -8,13 +8,25 @@
   export default {
     data () {
       return {
-        username:'8989889'
+        username:'yjh'
       }
     },
     methods: {
       async handleclick() {
         const res=await this.$http.get('http://localhost:8080/sys/user/get/'+this.username)
-        console.log(res)
+        const {
+          code,
+          msg,
+          data:{
+            createBy,
+            createTime,
+            email,
+            mobile
+          }
+        }=res.data
+        if(code===200){
+
+        }
       }
     }
 

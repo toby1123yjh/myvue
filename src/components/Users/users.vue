@@ -22,8 +22,9 @@
       <!--表格-->
       <el-table
         :data="userList"
-        height="350px"
-        style="width: 100%">
+        height="280px"
+        :fit=false
+        :stripe=true>
         <el-table-column
           type="index"
           label="序号"
@@ -32,32 +33,36 @@
         <el-table-column
           prop="name"
           label="姓名"
-          width="70">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="createBy"
           label="创建人"
-          width="70">
+          width="100">
         </el-table-column>
         <el-table-column
-          prop="createTime"
-          label="创建时间">
+          label="创建时间"
+          width="180">
           <template slot-scope="userList">
-            {{userList.row.createTime|}}
+            {{userList.row.createTime|datefmt }}
           </template>
         </el-table-column>
         <el-table-column
           prop="lastUpdateBy"
-          label="最近更新人">
+          label="最近更新人"
+          width="100">
         </el-table-column>
         <el-table-column
-          prop="lastUpdateTime"
-          label="更新时间">
-
+          label="更新时间"
+          width="180">
+          <template slot-scope="userList">
+            {{userList.row.lastUpdateTime|datefmt}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="roleNames"
-          label="角色名">
+          label="角色名"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="status"
@@ -65,15 +70,18 @@
         </el-table-column>
         <el-table-column
           prop="email"
-          label="邮箱">
+          label="邮箱"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="address"
-          label="电话">
+          label="电话"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="address"
-          label="操作">
+          label="操作"
+          width="100">
         </el-table-column>
       </el-table>
       <!--分页-->
@@ -81,8 +89,8 @@
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="pagenum"
-                     :page-sizes="[2, 4, 6, 8]"
-                     :page-size="2"
+                     :page-sizes="[5, 10, 20]"
+                     :page-size="pagesize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
       </el-pagination>
@@ -122,8 +130,7 @@
         //分页数据
         total: 0,
         pagenum: 1,  //当前页码
-        pagesize: 2, //每页大小
-        pageable: {},
+        pagesize: 5, //每页大小
         //查询数据
         query: '',
         total: 0,
@@ -149,7 +156,8 @@
         //const AUTH_TOKEN = localStorage.getItem('token')
         //this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
         //const res =await this.$http.get('users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}')
-        const res = await this.$http.get('/sys/user/getPage')
+        // const res = await this.$http.get('/sys/user/getPage?page=${this.pagenum}&size=${this.pagesize}')
+        const res = await this.$http.get('/sys/user/getPage?',{params:{page:this.pagenum-1,size:this.pagesize}})
         const {code, data: {content, totalElements}, msg,} = res.data
         if (code === 200) {
           this.userList = content
@@ -161,10 +169,15 @@
       },
       //分页方法
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.pagesize=val
+        this.pagenum=1
+        this.getUserList()
+        //console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        //console.log(`当前页: ${val}`);
+        this.pagenum=val
+        this.getUserList()
       },
       //搜索用户，query是双向绑定的，在getUserList()方法中已经写了
       searchUser() {

@@ -21,7 +21,8 @@
 
       <!--表格-->
       <el-table
-        :data="tableData"
+        :data="userList"
+        height="350px"
         style="width: 100%">
         <el-table-column
           type="index"
@@ -29,29 +30,61 @@
           width="50">
         </el-table-column>
         <el-table-column
-          prop="date"
-          label="日期"
-          width="120">
-        </el-table-column>
-        <el-table-column
           prop="name"
           label="姓名"
-          width="180">
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="createBy"
+          label="创建人"
+          width="70">
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="创建时间">
+          <template slot-scope="userList">
+            {{userList.row.createTime|}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="lastUpdateBy"
+          label="最近更新人">
+        </el-table-column>
+        <el-table-column
+          prop="lastUpdateTime"
+          label="更新时间">
+
+        </el-table-column>
+        <el-table-column
+          prop="roleNames"
+          label="角色名">
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label="状态">
+        </el-table-column>
+        <el-table-column
+          prop="email"
+          label="邮箱">
         </el-table-column>
         <el-table-column
           prop="address"
-          label="地址">
+          label="电话">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="操作">
         </el-table-column>
       </el-table>
       <!--分页-->
       <el-pagination class="block"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pagenum"
-        :page-sizes="[2, 4, 6, 8]"
-        :page-size="2"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
+                     @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="pagenum"
+                     :page-sizes="[2, 4, 6, 8]"
+                     :page-size="2"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="total">
       </el-pagination>
 
       <!--添加用户对话框-->
@@ -81,90 +114,93 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                //查询数据
-                query: '',
-                //分页数据
-                pagenum: 1,  //当前页
-                pagesize: 2,
-                total: 6,
-                //添加对话框的属性
-                formLabelWidth:'100px',
-                dialogFormVisibleAdd:false,
-                //添加用户表单数据
-                form:{
-                    username:"",
-                    password:"",
-                    email:"",
-                    mobile:"",
-                },
-                //列表数据
-                tableData: [{
-                    date: '2016-05-02',
-                    name: 'toby',
-                    address: '荔湾区站前路22'
-                }, {
-                    date: '2016-05-02',
-                    name: 'toby',
-                    address: '荔湾区站前路22'
-                }
-                ]
-            }
+  export default {
+    data() {
+      return {
+        //列表数据
+        userList: [],
+        //分页数据
+        total: 0,
+        pagenum: 1,  //当前页码
+        pagesize: 2, //每页大小
+        pageable: {},
+        //查询数据
+        query: '',
+        total: 0,
+        //添加对话框的属性
+        formLabelWidth: '100px',
+        dialogFormVisibleAdd: false,
+        //添加用户表单数据
+        form: {
+          username: "",
+          password: "",
+          email: "",
+          mobile: "",
         },
-        created() {
-            this.getUserList()
-        },
-        methods: {
-
-            async getUserList() {
-                const AUTH_TOKEN = localStorage.getItem('token')
-                this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
-                //const res =await this.$http.get('users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}')
-            },
-            //分页方法
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            },
-            //搜索用户，query是双向绑定的，在getUserList()方法中已经写了
-            searchUser() {
-                this.getUserList()
-            },
-            //重新加载列表数据
-            loadUserList() {
-                this.getUserList()
-            },
-            //显示添加对象对话框
-            addUserDia(){
-                this.dialogFormVisibleAdd=true
-            },
-            //删除用户
-            showDeleUserMsgBox(userId){
-                this.$confirm('删除用户？','提示',{
-                    confiremButton:'确定',
-                    cancelButtonText:'确定',
-                    type:'warning'
-                }).then(async ()=>{
-                    const res=await this.$http.delete('users/${userId}')
-                    console.log(reg)
-                    if(res.data.meta.status===200){
-                        this.getUserList()
-                        this.$message({
-                            type:'success',
-                            message:res.data.meta.msg
-
-                        })
-                    }
-                }).catch(()=>{
-                    this.$http.
-                })
-            }
+      }
+    },
+    //生命周期函数
+    created() {
+      this.getUserList()
+    },
+    methods: {
+      //获取用户列表
+      async getUserList() {
+        //const AUTH_TOKEN = localStorage.getItem('token')
+        //this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
+        //const res =await this.$http.get('users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}')
+        const res = await this.$http.get('/sys/user/getPage')
+        const {code, data: {content, totalElements}, msg,} = res.data
+        if (code === 200) {
+          this.userList = content
+          this.total = totalElements
+          this.$message.success(msg)
+        }else{
+          this.$message.error(msg)
         }
+      },
+      //分页方法
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
+      //搜索用户，query是双向绑定的，在getUserList()方法中已经写了
+      searchUser() {
+        this.getUserList()
+      },
+      //重新加载列表数据
+      loadUserList() {
+        this.getUserList()
+      },
+      //显示添加对象对话框
+      addUserDia() {
+        this.dialogFormVisibleAdd = true
+      },
+      //删除用户
+      showDeleUserMsgBox(userId) {
+        this.$confirm('删除用户？', '提示', {
+          confiremButton: '确定',
+          cancelButtonText: '确定',
+          type: 'warning'
+        }).then(async () => {
+          const res = await this.$http.delete('users/${userId}')
+          console.log(reg)
+          if (res.data.meta.status === 200) {
+            this.getUserList()
+            this.$message({
+              type: 'success',
+              message: res.data.meta.msg
+
+            })
+          }
+        }).catch(() => {
+          // this.$http.
+        })
+      }
     }
+  }
 </script>
 
 <style>

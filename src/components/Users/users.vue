@@ -12,8 +12,11 @@
         <el-col>
           <el-input
             @clear="loadUserList()"
-            clearable placeholder="请输入内容" @click="searchUser()" v-model="query" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            clearable
+            placeholder="请输入内容"
+            v-model="query"
+            class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" @click="searchUser()"></el-button>
           </el-input>
           <el-button type=" primary" @click="addUserDia()">添加用户</el-button>
         </el-col>
@@ -65,8 +68,15 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop="status"
           label="状态">
+          <template slot-scope="userList">
+            <el-switch
+              @change="switch_change(userList.row)"
+              v-model="userList.row.status"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </template>
         </el-table-column>
         <el-table-column
           prop="email"
@@ -81,7 +91,12 @@
         <el-table-column
           prop="address"
           label="操作"
-          width="100">
+          width="150">
+          <el-button-group>
+            <el-button size="mini" type="primary" icon="el-icon-edit"></el-button>
+            <el-button size="mini" type="primary" icon="el-icon-share"></el-button>
+            <el-button size="mini" type="primary" icon="el-icon-delete"></el-button>
+          </el-button-group>
         </el-table-column>
       </el-table>
       <!--分页-->
@@ -99,7 +114,7 @@
       <el-dialog title="添加用户" :visible.sync="dialogFormVisibleAdd">
         <el-form :model="form">
           <el-form-item label="用户名" label-width="100px">
-            <el-input v-model="form.username" autocomplete="off"></el-input>
+            <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="密码" label-width="100px">
             <el-input v-model="form.password" autocomplete="off"></el-input>
@@ -157,31 +172,42 @@
         //this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
         //const res =await this.$http.get('users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}')
         // const res = await this.$http.get('/sys/user/getPage?page=${this.pagenum}&size=${this.pagesize}')
-        const res = await this.$http.get('/sys/user/getPage?',{params:{page:this.pagenum-1,size:this.pagesize}})
+        const res = await this.$http.get('/sys/user/getPage?', {params: {page: this.pagenum - 1, size: this.pagesize}})
         const {code, data: {content, totalElements}, msg,} = res.data
         if (code === 200) {
           this.userList = content
           this.total = totalElements
           this.$message.success(msg)
-        }else{
+        } else {
           this.$message.error(msg)
         }
       },
       //分页方法
       handleSizeChange(val) {
-        this.pagesize=val
-        this.pagenum=1
+        this.pagesize = val
+        this.pagenum = 1
         this.getUserList()
         //console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
         //console.log(`当前页: ${val}`);
-        this.pagenum=val
+        this.pagenum = val
         this.getUserList()
       },
+      //开关发生
+      switch_change(val) {
+
+      },
       //搜索用户，query是双向绑定的，在getUserList()方法中已经写了
-      searchUser() {
-        this.getUserList()
+      async searchUser() {
+        // const res=await this.$http.get('/sys/user/get/djy')
+        const res=await this.$http.get('/sys/user/get/${this.query}')
+        console.log(res.data)
+        const{
+          code,
+          data,
+          msg
+        }=res.data
       },
       //重新加载列表数据
       loadUserList() {

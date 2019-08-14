@@ -89,12 +89,11 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="option"
           label="操作"
           width="150">
           <el-button-group>
             <el-button size="mini" type="primary" icon="el-icon-edit"></el-button>
-            <el-button size="mini" type="primary" icon="el-icon-share"></el-button>
             <el-button size="mini" type="primary" icon="el-icon-delete"></el-button>
           </el-button-group>
         </el-table-column>
@@ -120,7 +119,7 @@
             <el-input v-model="form.password" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="邮箱" :label-width="formLabelWidth">
-            <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-input v-model="form.email" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="电话" :label-width="formLabelWidth">
             <el-input v-model="form.mobile" autocomplete="off"></el-input>
@@ -128,7 +127,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisibleAdd = false">确 定</el-button>
+          <el-button type="primary" @click="addUser">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -197,6 +196,11 @@
       //开关发生
       switch_change(val) {
 
+      },
+      //添加用户
+      async addUser(){
+        const res=this.$http.post('/add',this.form)
+        console.log(res)
       },
       //搜索用户，query是双向绑定的，在getUserList()方法中已经写了
       async searchUser() {

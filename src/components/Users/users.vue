@@ -2,11 +2,7 @@
   <div>
     <el-card class="box-card">
       <!--面包屑-->
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item>首页</el-breadcrumb-item>
-        <el-breadcrumb-item>系统管理</el-breadcrumb-item>
-        <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-      </el-breadcrumb>
+      <my-bread label1="系统管理" label2="用户列表"></my-bread>
       <!--搜索-->
       <el-row class="search-row">
         <el-col>
@@ -136,7 +132,9 @@
 </template>
 
 <script>
+  import MyBread from "../GlobalComponent/BreadCrumb";
   export default {
+    components: {MyBread},
     data() {
       return {
         //列表数据

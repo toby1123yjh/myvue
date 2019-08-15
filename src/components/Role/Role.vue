@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <p2>Role</p2>
-  </div>
+  <el-card class="box-card">
+    <my-bread label1="权限管理" label2="角色管理"></my-bread>
+  </el-card>
 </template>
 
 <script>

@@ -199,7 +199,8 @@
       },
       //添加用户
       async addUser(){
-        const res=this.$http.post('/add',this.form)
+        sessionStorage.setItem("USERNAME","djy");
+        const res=this.$http.post('/sys/user/add',this.form)
         console.log(res)
       },
       //搜索用户，query是双向绑定的，在getUserList()方法中已经写了

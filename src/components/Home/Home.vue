@@ -9,27 +9,31 @@
       <el-container class="inner_container">
 
         <el-aside width="200px" class="aside">
-          <el-menu :default-openeds="['1']" :unique-opened=true background-color="#545c64" active-text-color="#ffd04b"
-                   :router=true text-color="#fff" >
+          <el-menu :unique-opened=true
+                   background-color="#545c64"
+                   active-text-color="#ffd04b"
+                   :router=true
+                   text-color="#fff" >
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-user-solid"></i>系统管理</template>
-              <el-menu-item index="/user">用户管理</el-menu-item>
+              <el-menu-item index="/user">用户列表</el-menu-item>
               <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项4-1</el-menu-item>
+                <template slot="title">测试</template>
+                <el-menu-item index="1-4-1">测试</el-menu-item>
               </el-submenu>
             </el-submenu>
             <el-submenu index="2">
-              <template slot="title"><i class="el-icon-menu"></i>导航二</template>
-              <el-menu-item index="2-1">选项1</el-menu-item>
+              <template slot="title"><i class="el-icon-menu"></i>权限管理</template>
+              <el-menu-item index="/role">角色列表</el-menu-item>
+              <el-menu-item index="/menu">菜单列表</el-menu-item>
             </el-submenu>
             <el-submenu index="3">
-              <template slot="title"><i class="el-icon-setting"></i>导航三</template>
-              <el-menu-item index="3-1">选项1</el-menu-item>
+              <template slot="title"><i class="el-icon-setting"></i>测试</template>
+              <el-menu-item index="3-1">测试</el-menu-item>
             </el-submenu>
             <el-submenu index="4">
-              <template slot="title"><i class="el-icon-goods"></i>导航四</template>
-              <el-menu-item index="3-1">选项1</el-menu-item>
+              <template slot="title"><i class="el-icon-goods"></i>测试</template>
+              <el-menu-item index="3-1">测试</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
